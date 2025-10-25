@@ -1,6 +1,7 @@
 [submodule "livox_ros_driver2"]
 	path = livox_ros_driver2
 	url = https://github.com/YuxiaoNiu2005/livox_ros_driver2.git
+	branch = main
 [submodule "point_lio"]
 	path = point_lio
 	url = https://github.com/SMBU-PolarBear-Robotics-Team/point_lio.git
