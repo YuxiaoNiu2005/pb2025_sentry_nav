@@ -4,7 +4,8 @@
 	branch = main
 [submodule "point_lio"]
 	path = point_lio
-	url = https://github.com/SMBU-PolarBear-Robotics-Team/point_lio.git
+	url = https://github.com/YuxiaoNiu2005/point_lio.git
+	branch = RM2025_SMBU_auto_sentry
 [submodule "pb_omni_pid_pursuit_controller"]
 	path = pb_omni_pid_pursuit_controller
 	url = https://github.com/SMBU-PolarBear-Robotics-Team/pb_omni_pid_pursuit_controller.git
