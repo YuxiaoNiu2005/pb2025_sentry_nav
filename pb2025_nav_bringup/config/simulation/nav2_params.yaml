@@ -577,14 +577,14 @@ pb_teleop_twist_joy_node:
     robot_base_frame: gimbal_yaw
     control_mode: auto_control    # Option: auto_control, manual_control
 
-    require_enable_button: true
-    enable_button: 4              # L1 shoulder button
-    enable_turbo_button: 5        # R1 shoulder button
+    require_enable_button: false
+    enable_button: 7              # L1 shoulder button 使能移动：右肩键
+    enable_turbo_button: 6        # R1 shoulder button 使能加速：左肩键
 
     axis_chassis:
-      x: 1                        # Left thumb stick vertical
-      y: 0                        # Left thumb stick horizontal
-      yaw: 6                      # button_left and button_right
+      x: 1                        # Left thumb stick vertical  前后平移：左摇杆垂直
+      y: 0                        # Left thumb stick horizontal 左右平移：左摇杆水平
+      yaw: 6                      # button_left and button_right 旋转：右方向键
     scale_chassis:
       x: 2.5
       y: 2.5
@@ -596,13 +596,16 @@ pb_teleop_twist_joy_node:
 
     axis_gimbal:
       roll: -1                    # Disable
-      pitch: 4                    # Right thumb stick vertical
-      yaw: 3                      # Right thumb stick horizontal
+      pitch: 3                    # Right thumb stick vertical 云台俯仰：右摇杆垂直
+      yaw: 2                      # Right thumb stick horizontal 云台旋转：右摇杆水平
+      shoot: 7                     # 开火：下方向键
     scale_gimbal:
       roll: 0.0
       pitch: -1.0
       yaw: 2.5
+      shoot: 1.0
     scale_gimbal_turbo:
       roll: 0.0
       pitch: -1.5
       yaw: 3.5
+      shoot: 1.0
