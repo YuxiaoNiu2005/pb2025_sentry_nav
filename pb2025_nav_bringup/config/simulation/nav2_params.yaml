@@ -60,8 +60,8 @@ point_lio:
       plane_thr: 0.1                                    # 0.05, the threshold for plane criteria, the smaller, the flatter a plane
       match_s: 81.0
       ivox_grid_resolution: 0.5
-      gravity: [ -0.0017106062002349824, -0.015764483618706405, -9.799878488207046 ]        # gravity to be aligned # rpy = [0, pi/6, 0]
-      gravity_init: [ -0.0017106062002349824, -0.015764483618706405, -9.799878488207046 ]   # preknown gravity in the first IMU body frame, use when imu_en is False or start from a non-stationary state
+      gravity: [ -0.022577146705876617, 6.92302699783253, -6.936216152018405 ]        # set from measured /livox/imu linear_acceleration (static)
+      gravity_init: [ -0.022577146705876617, 6.92302699783253, -6.936216152018405 ]   # measured initial gravity in IMU frame
       extrinsic_T: [ 0.0, 0.0, 0.0 ]
       extrinsic_R: [ 1.0, 0.0, 0.0,
                      0.0, 1.0, 0.0,
