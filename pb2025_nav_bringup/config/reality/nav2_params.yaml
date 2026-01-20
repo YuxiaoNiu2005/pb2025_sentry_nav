@@ -111,9 +111,9 @@ terrain_analysis:
     decayTime: 0.5                      # 点云时间差阈值 大于则不会被处理
     noDecayDis: 0.0                     # 点云距离阈值 小于该阈值不考虑时间差
     clearingDis: 0.0                    # 该距离外的点会被清除
-    useSorting: True                    # 这个参数开起来就能上坡了；如果 use_sorting,那么就以周围点中的分位点作为地面点，否则以最低点作为地面点；周围其余点相对于地面点的高度作为通过代价，所以对于坡面，有的点的代价是正，有的是负，就相互抵消了；不要与 consider_drop 同时开启，计算上会有冲突
+    useSorting: False                   # 这个参数开起来就能上坡了；如果 use_sorting,那么就以周围点中的分位点作为地面点，否则以最低点作为地面点；周围其余点相对于地面点的高度作为通过代价，所以对于坡面，有的点的代价是正，有的是负，就相互抵消了；不要与 consider_drop 同时开启，计算上会有冲突。【改为False：平地场景不需要上坡能力，使用最低点作为地面参考可准确识别0.2m高台边缘】
     quantileZ: 0.2                      # useful if use_sorting is enabled.
-    considerDrop: False                 # 考虑凹下去的地面,开启则将相对于地面点的高度取绝对值
+    considerDrop: True                  # 考虑凹下去的地面,开启则将相对于地面点的高度取绝对值【改为True：同时识别高台和凹坑，对高度差取绝对值提高检测敏感度】
     limitGroundLift: False
     maxGroundLift: 0.3
     clearDyObs: True                    # 清除动态物体的话，有动态物体走过的地方就走不了了
@@ -127,12 +127,12 @@ terrain_analysis:
     noDataObstacle: False               # treat no data as obstacle
     noDataBlockSkipNum: 0
     minBlockPointNum: 10
-    vehicleHeight: 0.5                  # 小于车辆高度的点才会进行处理
+    vehicleHeight: 0.35                 # 小于车辆高度的点才会进行处理【从0.5降至0.35：更贴近实际车高，提高对低矮障碍物的敏感度】
     voxelPointUpdateThre: 100
     voxelTimeUpdateThre: 1.0
-    minRelZ: -1.5                       # min_rel_z 以及 max_rel_z 限制了有效点云点的Z值范围，用于对天花板和地板进行处理
-    maxRelZ: 0.5
-    disRatioZ: 0.2                      # Z 值的最大最小范围由这两个值决定，但是并不等于这两个值，是有一个比例关系的，距离机器人越远，限定范围就越大，这其中考虑了坡度
+    minRelZ: -0.8                       # min_rel_z 以及 max_rel_z 限制了有效点云点的Z值范围，用于对天花板和地板进行处理【从-1.5缩小至-0.8：平地场景无需过大的高度范围】
+    maxRelZ: 0.3                        # 【从0.5降至0.3：关键参数！确保0.2m高台能被识别为障碍物，超过0.3m的高度变化会被标记为不可通行】
+    disRatioZ: 0.1                      # Z 值的最大最小范围由这两个值决定，但是并不等于这两个值，是有一个比例关系的，距离机器人越远，限定范围就越大，这其中考虑了坡度【从0.2降至0.1：减小距离相关的动态调整，平地场景保持严格的高度检测阈值】
 
 terrain_analysis_ext:
   ros__parameters:
