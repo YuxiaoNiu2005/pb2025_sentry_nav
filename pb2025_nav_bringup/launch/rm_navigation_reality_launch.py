@@ -119,7 +119,7 @@ def generate_launch_description():
 
     declare_use_robot_state_pub_cmd = DeclareLaunchArgument(
         "use_robot_state_pub",
-        default_value="True",
+        default_value="False",
         description="Whether to start the robot state publisher",
     )
 
