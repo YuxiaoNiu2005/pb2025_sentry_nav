@@ -168,6 +168,7 @@ def generate_launch_description():
                 respawn_delay=2.0,
                 parameters=[configured_params],
                 arguments=["--ros-args", "--log-level", log_level],
+                remappings=[("cmd_vel", "/serial_comm/cmd_vel")],
             ),
             Node(
                 package="nav2_controller",
@@ -283,6 +284,7 @@ def generate_launch_description():
                 plugin="fake_vel_transform::FakeVelTransform",
                 name="fake_vel_transform",
                 parameters=[configured_params],
+                remappings=[("cmd_vel", "/serial_comm/cmd_vel")],
             ),
             ComposableNode(
                 package="nav2_controller",
