@@ -42,7 +42,7 @@ point_lio:
       lidar_type: 1                                     # 1 for Livox serials LiDAR, 2 for Velodyne LiDAR, 3 for ouster LiDAR
       scan_line: 4
       timestamp_unit: 3                                 # the unit of time/t field in the PointCloud2 rostopic: 0-second, 1-milisecond, 2-microsecond, 3-nanosecond.
-      blind: 0.5
+      blind: 0.15
 
     mapping:
       imu_en: True
@@ -132,7 +132,7 @@ terrain_analysis:
     voxelTimeUpdateThre: 1.0
     minRelZ: -0.8                       # min_rel_z 以及 max_rel_z 限制了有效点云点的Z值范围，用于对天花板和地板进行处理【从-1.5缩小至-0.8：平地场景无需过大的高度范围】
     maxRelZ: 0.3                        # 【从0.5降至0.3：关键参数！确保0.2m高台能被识别为障碍物，超过0.3m的高度变化会被标记为不可通行】
-    disRatioZ: 0.1                      # Z 值的最大最小范围由这两个值决定，但是并不等于这两个值，是有一个比例关系的，距离机器人越远，限定范围就越大，这其中考虑了坡度【从0.2降至0.1：减小距离相关的动态调整，平地场景保持严格的高度检测阈值
+    disRatioZ: 0.05                      # Z 值的最大最小范围由这两个值决定，但是并不等于这两个值，是有一个比例关系的，距离机器人越远，限定范围就越大，这其中考虑了坡度【从0.2降至0.1：减小距离相关的动态调整，平地场景保持严格的高度检测阈值
 
 terrain_analysis_ext:
   ros__parameters:
@@ -178,6 +178,8 @@ small_gicp_relocalization:
     base_frame: "base_footprint"
     robot_base_frame: "gimbal_yaw"
     lidar_frame: "front_mid360"
+
+    # init_pose: [3.47, -3.8, 0.0, 0.0, 0.0, -3.14]   # [x, y, z, roll, pitch, yaw]
     init_pose: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]   # [x, y, z, roll, pitch, yaw]
     # The prior_pcd_file does not need to be specified since it going to be set by defaults in launch.
     # prior_pcd_file: ""
@@ -337,9 +339,9 @@ controller_server:
   ros__parameters:
     use_sim_time: False
     odom_topic: odometry
-    controller_frequency: 20.0
+    controller_frequency: 40.0
     min_x_velocity_threshold: 0.001
-    min_y_velocity_threshold: 0.5
+    min_y_velocity_threshold: 0.001
     min_theta_velocity_threshold: 0.001
     failure_tolerance: 0.3
     progress_checker_plugins: ["progress_checker"]
@@ -356,7 +358,7 @@ controller_server:
       yaw_goal_tolerance: 6.28
     FollowPath:
       plugin: "pb_omni_pid_pursuit_controller::OmniPidPursuitController"
-      translation_kp: 3.0
+      translation_kp: 2.0
       translation_ki: 0.1
       translation_kd: 0.3
       enable_rotation: false
@@ -373,8 +375,8 @@ controller_server:
       use_interpolation: false
       use_rotate_to_heading: false
       use_rotate_to_heading_treshold: 0.1
-      min_approach_linear_velocity: 0.5
-      approach_velocity_scaling_dist: 1.0
+      min_approach_linear_velocity: 0.15
+      approach_velocity_scaling_dist: 1.5
       v_linear_min: -2.5
       v_linear_max: 2.5
       v_angular_min: -3.0
@@ -390,8 +392,8 @@ local_costmap:
   local_costmap:
     ros__parameters:
       use_sim_time: False
-      update_frequency: 10.0
-      publish_frequency: 5.0
+      update_frequency: 20.0
+      publish_frequency: 10.0
       global_frame: odom
       robot_base_frame: gimbal_yaw_fake
       rolling_window: true
@@ -502,7 +504,7 @@ map_saver:
 planner_server:
   ros__parameters:
     use_sim_time: False
-    expected_planner_frequency: 10.0
+    expected_planner_frequency: 20.0
     planner_plugins: ["GridBased"]
     GridBased:
       plugin: "nav2_theta_star_planner/ThetaStarPlanner" # In Iron and older versions, "/" was used instead of "::"
@@ -567,7 +569,7 @@ waypoint_follower:
 velocity_smoother:
   ros__parameters:
     use_sim_time: False
-    smoothing_frequency: 20.0
+    smoothing_frequency: 40.0
     scale_velocities: False
     feedback: "OPEN_LOOP"
     max_velocity: [2.5, 2.5, 3.0]
