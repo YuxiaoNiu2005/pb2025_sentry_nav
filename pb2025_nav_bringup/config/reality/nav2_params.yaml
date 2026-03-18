@@ -108,7 +108,7 @@ sensor_scan_generation:
 terrain_analysis:
   ros__parameters:
     scanVoxelSize: 0.05                 # 点云下采样
-    decayTime: 1.0                      # 点云时间差阈值 大于则不会被处理
+    decayTime: 3.0                      # 点云时间差阈值 大于则不会被处理
     noDecayDis: 0.0                     # 点云距离阈值 小于该阈值不考虑时间差
     clearingDis: 0.0                    # 该距离外的点会被清除
     useSorting: False                   # 这个参数开起来就能上坡了；如果 use_sorting,那么就以周围点中的分位点作为地面点，否则以最低点作为地面点；周围其余点相对于地面点的高度作为通过代价，所以对于坡面，有的点的代价是正，有的是负，就相互抵消了；不要与 consider_drop 同时开启，计算上会有冲突。【改为False：平地场景不需要上坡能力，使用最低点作为地面参考可准确识别0.2m高台边缘】
@@ -137,7 +137,7 @@ terrain_analysis:
 terrain_analysis_ext:
   ros__parameters:
     scanVoxelSize: 0.1
-    decayTime: 2.0
+    decayTime: 3.0
     noDecayDis: 0.0
     clearingDis: 20.0
     useSorting: true
@@ -179,7 +179,7 @@ small_gicp_relocalization:
     robot_base_frame: "gimbal_yaw"
     lidar_frame: "front_mid360"
 
-    init_pose: [3.47, -3.8, 0.0, 0.0, 0.0, -3.14]   # [x, y, z, roll, pitch, yaw]
+    init_pose: [-0.38, -3.32, 0.0, 0.0, 0.0, 0.0]   # [x, y, z, roll, pitch, yaw]
     # init_pose: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]   # [x, y, z, roll, pitch, yaw]
     # The prior_pcd_file does not need to be specified since it going to be set by defaults in launch.
     # prior_pcd_file: ""
@@ -400,7 +400,7 @@ local_costmap:
       width: 5
       height: 5
       resolution: 0.05
-      robot_radius: 0.29      ##机器人半径
+      robot_radius: 0.2      ##机器人半径
       plugins: ["static_layer", "intensity_voxel_layer", "inflation_layer"]
       intensity_voxel_layer:
         plugin: pb_nav2_costmap_2d::IntensityVoxelLayer
@@ -416,7 +416,7 @@ local_costmap:
         z_voxels: 16
         min_obstacle_height: 0.0
         max_obstacle_height: 2.0
-        min_obstacle_intensity: 0.1
+        min_obstacle_intensity: 0.1  # 原为0.1：提高强度阈值，过滤低强度噪声返回值
         max_obstacle_intensity: 2.0
         observation_sources: terrain_map
         terrain_map:
@@ -439,7 +439,7 @@ local_costmap:
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 4.0
-        inflation_radius: 0.7
+        inflation_radius: 0.4
       always_send_full_costmap: False
 
 global_costmap:
@@ -450,7 +450,7 @@ global_costmap:
       publish_frequency: 2.0
       global_frame: map
       robot_base_frame: gimbal_yaw_fake
-      robot_radius: 0.29    ##机器人半径
+      robot_radius: 0.2    ##机器人半径
       resolution: 0.05
       track_unknown_space: true
       plugins: ["static_layer", "intensity_voxel_layer", "inflation_layer"]
@@ -491,7 +491,7 @@ global_costmap:
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 4.0
-        inflation_radius: 0.7
+        inflation_radius: 0.4
       always_send_full_costmap: False
 
 # The yaml_filename does not need to be specified since it going to be set by defaults in launch.
