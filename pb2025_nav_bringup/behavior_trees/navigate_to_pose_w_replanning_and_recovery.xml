@@ -32,8 +32,7 @@
             <ClearEntireCostmap name="ClearGlobalCostmap-Subtree"
                                 service_name="global_costmap/clear_entirely_global_costmap"/>
           </Sequence>
-          <BackUp backup_dist="1.0"
-                  backup_speed="1.0"/>
+          <Wait wait_duration="2.0"/>
         </RoundRobin>
       </ReactiveFallback>
     </RecoveryNode>
